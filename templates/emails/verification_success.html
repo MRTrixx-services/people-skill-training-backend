@@ -1,0 +1,122 @@
+{% extends 'emails/base_email.html' %}
+
+{% block content %}
+
+<!-- Success Icon -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin: 0 0 25px 0;">
+    <tr>
+        <td align="center">
+            <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 50%; display: inline-block; text-align: center; line-height: 80px; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);">
+                <span style="font-size: 40px; color: #ffffff; display: inline-block; vertical-align: middle; line-height: 80px;">✓</span>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<!-- Header -->
+<h2 style="color: #2d3748; font-size: 26px; font-weight: 700; margin: 0 0 10px 0; text-align: center;">
+    Welcome to {{ platform_name }}!
+</h2>
+
+<p style="color: #10b981; font-size: 16px; font-weight: 600; text-align: center; margin: 0 0 30px 0;">
+    Your email has been verified successfully
+</p>
+
+<!-- Greeting -->
+<p style="color: #4a5568; font-size: 16px; line-height: 1.7; margin: 0 0 20px 0;">
+    Hi {{ user_name }},
+</p>
+
+<p style="color: #4a5568; font-size: 15px; line-height: 1.7; margin: 0 0 25px 0;">
+    Congratulations! Your email address has been successfully verified. Your <strong>{{ platform_name }}</strong> account is now fully activated and ready to use.
+</p>
+
+<!-- Dashboard Button -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin: 30px 0;">
+    <tr>
+        <td align="center">
+            <table cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                    <td style="background: linear-gradient(135deg, {{ colors.primary }} 0%, {{ colors.secondary }} 100%); border-radius: 8px; box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);">
+                        <a href="{{ dashboard_url }}" style="display: block; color: #ffffff; text-decoration: none; padding: 16px 40px; font-size: 16px; font-weight: 700;">
+                            🚀 Go to Dashboard
+                        </a>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+<!-- What's Next Box -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #f9fafb; border-radius: 8px; margin: 25px 0 0 0;">
+    <tr>
+        <td style="padding: 25px;">
+            <p style="color: #1f2937; font-size: 16px; font-weight: 600; margin: 0 0 15px 0;">
+                🎯 What's Next?
+            </p>
+            
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                    <td style="padding: 4px 0;">
+                        <table cellpadding="0" cellspacing="0" border="0">
+                            <tr>
+                                <td style="padding-right: 8px; vertical-align: top;">
+                                    <span style="color: {{ colors.primary }}; font-size: 18px;">•</span>
+                                </td>
+                                <td>
+                                    <p style="color: #4b5563; font-size: 14px; line-height: 1.6; margin: 0;">
+                                        Complete your profile to get personalized recommendations
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 4px 0;">
+                        <table cellpadding="0" cellspacing="0" border="0">
+                            <tr>
+                                <td style="padding-right: 8px; vertical-align: top;">
+                                    <span style="color: {{ colors.primary }}; font-size: 18px;">•</span>
+                                </td>
+                                <td>
+                                    <p style="color: #4b5563; font-size: 14px; line-height: 1.6; margin: 0;">
+                                        Browse our webinars and start learning
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 4px 0;">
+                        <table cellpadding="0" cellspacing="0" border="0">
+                            <tr>
+                                <td style="padding-right: 8px; vertical-align: top;">
+                                    <span style="color: {{ colors.primary }}; font-size: 18px;">•</span>
+                                </td>
+                                <td>
+                                    <p style="color: #4b5563; font-size: 14px; line-height: 1.6; margin: 0;">
+                                        Connect with instructors and fellow learners
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+<p style="color: #4a5568; font-size: 14px; line-height: 1.6; margin: 25px 0 0 0;">
+    We're excited to have you as part of the <strong>{{ platform_name }}</strong> community!
+</p>
+
+<p style="color: #4a5568; font-size: 14px; line-height: 1.6; margin: 15px 0 0 0;">
+    Best regards,<br>
+    <strong>{{ platform_name }} Team</strong>
+</p>
+
+{% endblock %}

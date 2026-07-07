@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Your Purchase</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f4f4f4;">
+    <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f4f4f4; padding: 20px;">
+        <tr>
+            <td align="center">
+                <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                    
+                    <!-- Header -->
+                    <tr>
+                        <td style="background: linear-gradient(135deg, {{ colors.primary }} 0%, {{ colors.secondary }} 100%); padding: 40px 30px; text-align: center;">
+                            {% if company_logo %}
+                            <img src="{{ company_logo }}" alt="{{ company_name }}" style="max-width: 180px; margin-bottom: 20px;">
+                            {% endif %}
+                            <h1 style="color: #ffffff; margin: 0; font-size: 28px; font-weight: bold;">
+                                We're Here to Help! 🤝
+                            </h1>
+                        </td>
+                    </tr>
+                    
+                    <!-- Main content -->
+                    <tr>
+                        <td style="padding: 40px 30px;">
+                            <p style="color: #333333; font-size: 18px; line-height: 1.6; margin: 0 0 20px 0;">
+                                Hi {{ user_name }},
+                            </p>
+                            
+                            <p style="color: #666666; font-size: 16px; line-height: 1.6; margin: 0 0 20px 0;">
+                                We noticed you created an account about <strong>{{ hours_ago }} hours ago</strong>, but something prevented you from completing your webinar  enrollment.
+                            </p>
+                            
+                            <!-- Problem notice -->
+                            <table width="100%" cellpadding="0" cellspacing="0" style="margin: 25px 0;">
+                                <tr>
+                                    <td style="background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 20px; border-radius: 4px;">
+                                        <p style="color: #856404; font-size: 15px; margin: 0; line-height: 1.6;">
+                                            <strong>⚠️ We experienced a temporary email delivery issue</strong><br>
+                                            Some users couldn't receive confirmation emails during signup. We've now fixed this issue!
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                            
+                            <p style="color: #666666; font-size: 16px; line-height: 1.6; margin: 20px 0;">
+                                <strong>Good news!</strong> Your account is ready, and we've resolved all technical issues. You can now:
+                            </p>
+                            
+                            <ul style="color: #666666; font-size: 15px; line-height: 1.8; padding-left: 20px; margin: 20px 0;">
+                                <li>✅ Browse our complete webinar catalog</li>
+                                <li>✅ Enroll in any training program</li>
+                                <li>✅ Get instant access after purchase</li>
+                                <li>✅ Receive all confirmation emails</li>
+                            </ul>
+                            
+                            <!-- CTA Buttons -->
+                            <table width="100%" cellpadding="0" cellspacing="0" style="margin: 30px 0;">
+                                <tr>
+                                    <td align="center">
+                                        <table cellpadding="0" cellspacing="0">
+                                            <tr>
+                                                <td style="padding: 0 10px;">
+                                                    <a href="{{ browse_url }}" style="display: inline-block; background: linear-gradient(135deg, {{ colors.primary }} 0%, {{ colors.secondary }} 100%); color: #ffffff; text-decoration: none; padding: 16px 32px; border-radius: 50px; font-size: 16px; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+                                                        🎓 Browse webinars
+                                                    </a>
+                                                </td>
+                                                <td style="padding: 0 10px;">
+                                                    <a href="{{ account_url }}" style="display: inline-block; background-color: #f8f9fa; color: {{ colors.primary }}; border: 2px solid {{ colors.primary }}; text-decoration: none; padding: 14px 32px; border-radius: 50px; font-size: 16px; font-weight: bold;">
+                                                        👤 My Account
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                            
+                            <!-- Help section -->
+                            <table width="100%" cellpadding="0" cellspacing="0" style="margin: 30px 0;">
+                                <tr>
+                                    <td style="background-color: #e8f4fd; padding: 25px; border-radius: 8px; border-left: 4px solid {{ colors.primary }};">
+                                        <p style="color: #333333; font-size: 16px; margin: 0 0 10px 0; font-weight: bold;">
+                                            💬 Need Help?
+                                        </p>
+                                        <p style="color: #666666; font-size: 14px; margin: 0; line-height: 1.6;">
+                                            If you encountered any issues or have questions, our support team is ready to assist you!<br>
+                                            📧 Email: <a href="mailto:{{ help_email }}" style="color: {{ colors.primary }}; text-decoration: none; font-weight: bold;">{{ help_email }}</a><br>
+                                            Or visit our <a href="{{ support_url }}" style="color: {{ colors.primary }}; text-decoration: none;">support center</a>
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                            
+                            <p style="color: #666666; font-size: 15px; line-height: 1.6; margin: 25px 0 0 0;">
+                                We apologize for any inconvenience and look forward to helping you achieve your training goals!
+                            </p>
+                            
+                            <p style="color: #666666; font-size: 15px; line-height: 1.6; margin: 10px 0 0 0;">
+                                Best regards,<br>
+                                <strong>The {{ company_name }} Team</strong>
+                            </p>
+                        </td>
+                    </tr>
+                    
+                    <!-- Footer -->
+                    <tr>
+                        <td style="background-color: #f8f9fa; padding: 30px; text-align: center; border-top: 1px solid #e0e0e0;">
+                            <p style="color: #999999; font-size: 12px; margin: 0;">
+                                This email was sent because you recently created an account at {{ company_name }}.<br>
+                                If you didn't create this account, please ignore this email.
+                            </p>
+                            <p style="color: #999999; font-size: 12px; margin: 10px 0 0 0;">
+                                &copy; {{ current_year }} {{ company_name }}. All rights reserved.
+                            </p>
+                        </td>
+                    </tr>
+                    
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

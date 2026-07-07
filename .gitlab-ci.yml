@@ -1,0 +1,72 @@
+stages:
+  # - test
+  - deploy
+
+variables:
+  DOCKER_IMAGE: peopleskilltraining:latest
+
+# Optional test job (disabled for now)
+# test:
+#   stage: test
+#   image: python:3.11-slim
+#   script:
+#     - pip install -q -r requirements.txt
+#     - python manage.py check --deploy
+#   only:
+#     - main
+
+# Deploy to Nexilent (DigitalOcean)
+deploy-nexilent:
+  stage: deploy
+  image: alpine:latest
+  before_script:
+    - apk add --no-cache openssh-client bash
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY_NEXILENT" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - ssh-keyscan -H 159.65.151.72 >> ~/.ssh/known_hosts
+  script:
+    - |
+      ssh -o StrictHostKeyChecking=no root@159.65.151.72 "
+        cd /opt/nexiapps/production/peopleskilltrainingapp/ &&
+        git pull origin main &&
+        docker build -t peopleskilltraining:latest . &&
+        docker-compose down &&
+        docker-compose up -d &&
+        docker ps
+      "
+  environment:
+    name: production-nexilent
+    url: https://api.compliancetrained.com
+  when: manual
+  only:
+    - main
+
+# Deploy to GreensGeek
+deploy-greensgeek:
+  stage: deploy
+  image: alpine:latest
+  before_script:
+    - apk add --no-cache openssh-client bash
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY_GREENSGEEK" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - ssh-keyscan -H 67.208.42.215 >> ~/.ssh/known_hosts
+  script:
+    - |
+      ssh -o StrictHostKeyChecking=no root@67.208.42.215 "
+        cd /opt/nexiapps/production/peopleskilltrainingapp/ &&
+        git pull origin main &&
+        docker build -t peopleskilltraining:latest . &&
+        docker-compose down &&
+        docker-compose up -d &&
+        docker ps
+      "
+  environment:
+    name: production-greensgeek
+    url: https://westapi.compliancetrained.com
+  when: manual
+  only:
+    - main

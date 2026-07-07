@@ -1,0 +1,201 @@
+{% extends 'emails/base_email.html' %}
+
+{% block content %}
+
+<!-- Reminder Icon -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin: 0 0 25px 0;">
+    <tr>
+        <td align="center">
+            <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); border-radius: 50%; display: inline-block; text-align: center; line-height: 80px; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);">
+                <span style="font-size: 40px; display: inline-block; vertical-align: middle; line-height: 80px;">📅</span>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<!-- Greeting -->
+<h2 style="color: #2d3748; font-size: 24px; font-weight: 700; margin: 0 0 20px 0; text-align: center;">
+    Hi {{ user.first_name|default:user.email }}!
+</h2>
+
+<!-- Warning/Reminder Box -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); border-left: 4px solid #f59e0b; border-radius: 0 8px 8px 0; margin: 0 0 25px 0;">
+    <tr>
+        <td style="padding: 25px;">
+            <p style="color: #92400e; font-size: 16px; font-weight: 700; margin: 0 0 10px 0;">
+                ⏰ Reminder
+            </p>
+            <p style="color: #78350f; font-size: 15px; line-height: 1.6; margin: 0;">
+                Your webinar "<strong>{{ webinar.title }}</strong>" starts in <strong style="color: #b45309;">{{ time_until_start }}</strong>!
+            </p>
+        </td>
+    </tr>
+</table>
+
+<!-- Webinar Details Title -->
+<p style="color: #2d3748; font-size: 18px; font-weight: 700; margin: 0 0 15px 0;">
+    📋 Webinar Details:
+</p>
+
+<!-- Webinar Details Table -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; margin: 0 0 25px 0;">
+    <tr>
+        <td style="padding: 12px 15px; background-color: #f9fafb; border-bottom: 1px solid #e5e7eb; font-weight: 600; color: #4a5568; width: 30%;">
+            Title:
+        </td>
+        <td style="padding: 12px 15px; border-bottom: 1px solid #e5e7eb; color: #1f2937;">
+            {{ webinar.title }}
+        </td>
+    </tr>
+    <tr>
+        <td style="padding: 12px 15px; background-color: #f9fafb; border-bottom: 1px solid #e5e7eb; font-weight: 600; color: #4a5568;">
+            Date & Time:
+        </td>
+        <td style="padding: 12px 15px; border-bottom: 1px solid #e5e7eb; color: #1f2937;">
+            {{ webinar.scheduled_date|date:"F d, Y" }} at {{ webinar.scheduled_date|time:"g:i A" }} {{ webinar.timezone|default:"UTC" }}
+        </td>
+    </tr>
+    <tr>
+        <td style="padding: 12px 15px; background-color: #f9fafb; border-bottom: 1px solid #e5e7eb; font-weight: 600; color: #4a5568;">
+            Duration:
+        </td>
+        <td style="padding: 12px 15px; border-bottom: 1px solid #e5e7eb; color: #1f2937;">
+            {{ webinar.duration }} minutes
+        </td>
+    </tr>
+    <tr>
+        <td style="padding: 12px 15px; background-color: #f9fafb; font-weight: 600; color: #4a5568;">
+            Instructor:
+        </td>
+        <td style="padding: 12px 15px; color: #1f2937;">
+            {{ webinar.speaker.user.get_full_name|default:webinar.speaker.user.email }}
+        </td>
+    </tr>
+</table>
+
+<!-- Join Button -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin: 30px 0;">
+    <tr>
+        <td align="center">
+            <table cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                    <td style="background: linear-gradient(135deg, {{ colors.primary }} 0%, {{ colors.secondary }} 100%); border-radius: 8px; box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);">
+                        <a href="{{ join_url }}" style="display: block; color: #ffffff; text-decoration: none; padding: 16px 40px; font-size: 16px; font-weight: 700;">
+                            🎥 Join Webinar Now
+                        </a>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+<!-- Pro Tips Box -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #eff6ff; border-left: 4px solid #3b82f6; border-radius: 0 8px 8px 0; margin: 25px 0 0 0;">
+    <tr>
+        <td style="padding: 25px;">
+            <p style="color: #1e40af; font-size: 16px; font-weight: 600; margin: 0 0 15px 0;">
+                💡 Pro Tips for the Best Experience:
+            </p>
+            
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                    <td style="padding: 4px 0;">
+                        <table cellpadding="0" cellspacing="0" border="0">
+                            <tr>
+                                <td style="padding-right: 8px; vertical-align: top;">
+                                    <span style="color: #3b82f6; font-size: 18px;">•</span>
+                                </td>
+                                <td>
+                                    <p style="color: #1e40af; font-size: 14px; line-height: 1.6; margin: 0;">
+                                        Join 5-10 minutes early to test your audio/video
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 4px 0;">
+                        <table cellpadding="0" cellspacing="0" border="0">
+                            <tr>
+                                <td style="padding-right: 8px; vertical-align: top;">
+                                    <span style="color: #3b82f6; font-size: 18px;">•</span>
+                                </td>
+                                <td>
+                                    <p style="color: #1e40af; font-size: 14px; line-height: 1.6; margin: 0;">
+                                        Use a stable internet connection
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 4px 0;">
+                        <table cellpadding="0" cellspacing="0" border="0">
+                            <tr>
+                                <td style="padding-right: 8px; vertical-align: top;">
+                                    <span style="color: #3b82f6; font-size: 18px;">•</span>
+                                </td>
+                                <td>
+                                    <p style="color: #1e40af; font-size: 14px; line-height: 1.6; margin: 0;">
+                                        Have a quiet environment ready
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 4px 0;">
+                        <table cellpadding="0" cellspacing="0" border="0">
+                            <tr>
+                                <td style="padding-right: 8px; vertical-align: top;">
+                                    <span style="color: #3b82f6; font-size: 18px;">•</span>
+                                </td>
+                                <td>
+                                    <p style="color: #1e40af; font-size: 14px; line-height: 1.6; margin: 0;">
+                                        Prepare any questions you'd like to ask
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+<!-- Recording Notice -->
+<p style="color: #4a5568; font-size: 15px; line-height: 1.7; margin: 25px 0 0 0;">
+    We're looking forward to seeing you there! If you can't make it, don't worry - registered attendees will receive a recording link after the session.
+</p>
+
+<!-- Divider -->
+<div style="height: 1px; background-color: #e5e7eb; margin: 30px 0;"></div>
+
+<!-- Cancel/Reschedule Section -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0">
+    <tr>
+        <td style="background-color: #f9fafb; border-radius: 8px; padding: 20px;">
+            <p style="color: #2d3748; font-size: 15px; font-weight: 600; margin: 0 0 10px 0;">
+                Can't attend?
+            </p>
+            <p style="color: #6b7280; font-size: 14px; line-height: 1.6; margin: 0;">
+                You can 
+                {% if cancel_url %}
+                <a href="{{ cancel_url }}" style="color: {{ colors.primary }}; text-decoration: none; font-weight: 500;">cancel your registration</a>
+                {% endif %}
+                {% if cancel_url and reschedule_url %} or {% endif %}
+                {% if reschedule_url %}
+                <a href="{{ reschedule_url }}" style="color: {{ colors.primary }}; text-decoration: none; font-weight: 500;">reschedule for another session</a>
+                {% endif %}
+                .
+            </p>
+        </td>
+    </tr>
+</table>
+
+{% endblock %}

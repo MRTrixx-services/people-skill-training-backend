@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{{ subject|default:"Verify Your Email Address" }}</title>
+    <!--[if mso]>
+    <style type="text/css">
+        body, table, td {font-family: Arial, Helvetica, sans-serif !important;}
+    </style>
+    <![endif]-->
+    <style>
+        /* Reset Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #1a202c;
+            background-color: #f7fafc;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        /* Container */
+        .email-wrapper {
+            width: 100%;
+            padding: 20px 0;
+            background-color: #f7fafc;
+        }
+        
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, {{ platform.primary_color|default:'#667eea' }} 0%, {{ platform.secondary_color|default:'#764ba2' }} 100%);
+            padding: 40px 30px;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"><path fill="%23ffffff" fill-opacity="0.1" d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"></path></svg>') bottom center no-repeat;
+            background-size: cover;
+            opacity: 0.3;
+        }
+        
+        .logo {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .logo img {
+            max-width: 150px;
+            height: auto;
+            margin-bottom: 15px;
+        }
+        
+        .header h1 {
+            position: relative;
+            z-index: 1;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+        
+        .header p {
+            position: relative;
+            z-index: 1;
+            font-size: 16px;
+            opacity: 0.95;
+            font-weight: 400;
+        }
+        
+        /* Content */
+        .content {
+            padding: 50px 40px;
+        }
+        
+        .icon-wrapper {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, {{ platform.primary_color|default:'#667eea' }} 0%, {{ platform.secondary_color|default:'#764ba2' }} 100%);
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 16px rgba(102, 126, 234, 0.25);
+        }
+        
+        .icon svg {
+            width: 40px;
+            height: 40px;
+            stroke: white;
+        }
+        
+        .greeting {
+            font-size: 20px;
+            color: #2d3748;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+        
+        .main-content {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #4a5568;
+            margin-bottom: 35px;
+        }
+        
+        .main-content p {
+            margin-bottom: 15px;
+        }
+        
+        /* CTA Button */
+        .cta-wrapper {
+            text-align: center;
+            margin: 40px 0;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, {{ platform.primary_color|default:'#4299e1' }} 0%, {{ platform.secondary_color|default:'#3182ce' }} 100%);
+            color: white !important;
+            text-decoration: none;
+            padding: 18px 45px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 16px;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(66, 153, 225, 0.3);
+            letter-spacing: 0.3px;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(66, 153, 225, 0.4);
+        }
+        
+        /* Info Boxes */
+        .info-box {
+            background: linear-gradient(135deg, #ebf8ff 0%, #e6fffa 100%);
+            border-left: 4px solid {{ platform.primary_color|default:'#4299e1' }};
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 0 10px 10px 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        .info-box strong {
+            display: block;
+            margin-bottom: 12px;
+            color: #2d3748;
+            font-size: 16px;
+        }
+        
+        .info-box-content {
+            color: #4a5568;
+            line-height: 1.8;
+        }
+        
+        .warning-box {
+            background: linear-gradient(135deg, #fffaf0 0%, #fef5e7 100%);
+            border-left: 4px solid #f6ad55;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 0 10px 10px 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        .warning-box strong {
+            color: #c05621;
+            display: block;
+            margin-bottom: 8px;
+            font-size: 15px;
+        }
+        
+        .success-box {
+            background: linear-gradient(135deg, #f0fff4 0%, #e6fffa 100%);
+            border-left: 4px solid #48bb78;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 0 10px 10px 0;
+        }
+        
+        /* URL Display */
+        .url-box {
+            background-color: #f7fafc;
+            padding: 15px;
+            border-radius: 8px;
+            word-break: break-all;
+            font-size: 13px;
+            color: #4299e1;
+            border: 1px solid #e2e8f0;
+            margin: 20px 0;
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: #2d3748;
+            color: #cbd5e0;
+            padding: 40px 30px;
+            text-align: center;
+            font-size: 14px;
+        }
+        
+        .footer-brand {
+            font-size: 18px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 15px;
+        }
+        
+        .footer p {
+            margin: 8px 0;
+            color: #a0aec0;
+        }
+        
+        .footer a {
+            color: {{ platform.primary_color|default:'#4299e1' }};
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer a:hover {
+            color: #63b3ed;
+        }
+        
+        .social-links {
+            margin: 25px 0;
+            padding: 20px 0;
+            border-top: 1px solid #4a5568;
+            border-bottom: 1px solid #4a5568;
+        }
+        
+        .social-links a {
+            display: inline-block;
+            margin: 0 12px;
+            padding: 8px 16px;
+            background-color: #4a5568;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background-color: {{ platform.primary_color|default:'#4299e1' }};
+            transform: translateY(-2px);
+        }
+        
+        .divider {
+            height: 1px;
+            background-color: #4a5568;
+            margin: 25px 0;
+        }
+        
+        .disclaimer {
+            font-size: 12px;
+            color: #718096;
+            line-height: 1.6;
+            margin-top: 20px;
+        }
+        
+        /* Responsive */
+        @media only screen and (max-width: 640px) {
+            .email-wrapper {
+                padding: 10px 0;
+            }
+            
+            .email-container {
+                margin: 0 10px;
+                border-radius: 12px;
+            }
+            
+            .content {
+                padding: 35px 25px;
+            }
+            
+            .header {
+                padding: 30px 20px;
+            }
+            
+            .header h1 {
+                font-size: 26px;
+            }
+            
+            .header p {
+                font-size: 14px;
+            }
+            
+            .cta-button {
+                padding: 15px 35px;
+                font-size: 15px;
+                display: block;
+                width: 100%;
+            }
+            
+            .info-box, .warning-box {
+                padding: 20px;
+            }
+            
+            .footer {
+                padding: 30px 20px;
+            }
+            
+            .social-links a {
+                margin: 5px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="email-wrapper">
+        <div class="email-container">
+            <!-- Header -->
+            <div class="header">
+                <div class="logo">
+                    {% if platform.logo_url %}
+                    <img src="{{ platform.logo_url }}" alt="{{ platform.name }}" />
+                    {% endif %}
+                </div>
+                <h1>{{ platform.name|default:"PeopleSkillTraining" }}</h1>
+                <p>{{ platform.tagline|default:"Professional Webinar Platform" }}</p>
+            </div>
+            
+            <!-- Content -->
+            <div class="content">
+                {% block content %}
+                <!-- Icon -->
+                <div class="icon-wrapper">
+                    <div class="icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                </div>
+                
+                <!-- Greeting -->
+                <div class="greeting">
+                    Hello {% if user.first_name %}{{ user.first_name }}{% else %}there{% endif %}! 👋
+                </div>
+                
+                <!-- Main Content -->
+                <div class="main-content">
+                    <p>Thank you for registering with <strong>{{ platform.name|default:"PeopleSkillTraining" }}</strong>! We're excited to have you join our community of learners and professionals.</p>
+                    
+                    <p>To get started and unlock access to all our features, please verify your email address by clicking the button below:</p>
+                </div>
+                
+                <!-- Account Details -->
+                <div class="info-box">
+                    <strong>📋 Account Details</strong>
+                    <div class="info-box-content">
+                        <strong>Email:</strong> {{ user.email }}<br>
+                        {% if user.first_name %}
+                        <strong>Name:</strong> {{ user.first_name }} {{ user.last_name }}<br>
+                        {% endif %}
+                        <strong>Role:</strong> {{ user.role|title }}<br>
+                        <strong>Registration Date:</strong> {{ user.created_at|date:"F d, Y at g:i A" }}
+                    </div>
+                </div>
+                
+                <!-- CTA Button -->
+                <div class="cta-wrapper">
+                    <a href="{{ verification_url }}" class="cta-button">
+                        ✓ Verify Email Address
+                    </a>
+                </div>
+                
+                <!-- Warning Box -->
+                <div class="warning-box">
+                    <strong>⏰ Important Notice</strong>
+                    <p style="margin: 0; color: #744210;">This verification link will expire in <strong>24 hours</strong>. If you didn't create an account with us, please ignore this email or contact our support team.</p>
+                </div>
+                
+                <!-- Alternative Link -->
+                <p style="color: #718096; font-size: 14px; margin-top: 30px;">
+                    <strong>Button not working?</strong> Copy and paste this link into your browser:
+                </p>
+                <div class="url-box">
+                    {{ verification_url }}
+                </div>
+                
+                <!-- Support Section -->
+                <div style="margin-top: 40px; padding-top: 30px; border-top: 1px solid #e2e8f0;">
+                    <p style="color: #718096; font-size: 14px;">
+                        Need help? Our support team is here for you!<br>
+                        📧 Email: <a href="mailto:{{ platform.support_email|default:'support@peopleskilltraining.com' }}" style="color: {{ platform.primary_color|default:'#4299e1' }};">{{ platform.support_email|default:"support@peopleskilltraining.com" }}</a><br>
+                        📞 Phone: {{ platform.contact_phone|default:"+1 (555) 123-4567" }}
+                    </p>
+                </div>
+                {% endblock %}
+            </div>
+            
+            <!-- Footer -->
+            <div class="footer">
+                <div class="footer-brand">
+                    {{ platform.name|default:"PeopleSkillTraining" }}
+                </div>
+                
+                <p>{{ platform.address|default:"" }}</p>
+                <p>
+                    {{ platform.contact_phone|default:"" }} | 
+                    <a href="mailto:{{ platform.support_email|default:'support@peopleskilltraining.com' }}">
+                        {{ platform.support_email|default:"support@peopleskilltraining.com" }}
+                    </a>
+                </p>
+               
+                <!-- Disclaimer -->
+                <div class="disclaimer">
+                    <p>
+                        You received this email because you registered an account with {{ platform.name|default:"PeopleSkillTraining" }}.
+                    </p>
+                    <p style="margin-top: 10px;">
+                        If you didn't create this account, please disregard this email or 
+                        <a href="mailto:{{ platform.support_email|default:'support@peopleskilltraining.com' }}">contact our support team</a>.
+                    </p>
+                    <p style="margin-top: 15px; opacity: 0.7;">
+                        © {{ current_year|default:"2025" }} {{ platform.name|default:"PeopleSkillTraining" }}. All rights reserved.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

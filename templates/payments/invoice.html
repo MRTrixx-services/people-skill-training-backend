@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Invoice - {{ payment.transaction_id }}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        @page {
+            size: A4;
+            margin: 15mm;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            font-size: 10pt;
+            line-height: 1.5;
+            color: #1f2937;
+            background: #ffffff;
+        }
+        .invoice-container {
+            width: 100%;
+            max-width: 180mm; /* A4 width minus margins */
+        }
+        .no-break {
+            page-break-inside: avoid;
+            break-inside: avoid;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 24px;
+        }
+        .brand-block {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .logo {
+            width: 48px;
+            height: 48px;
+            background: {{ platform.primary_color }};
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+        .brand-text h1 {
+            font-size: 16pt;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 2px;
+        }
+        .brand-text p {
+            font-size: 9pt;
+            color: #6b7280;
+        }
+        .invoice-title {
+            font-size: 28pt;
+            font-weight: 700;
+            color: {{ platform.primary_color }};
+            letter-spacing: 1px;
+        }
+        .divider {
+            height: 1px;
+            background: #e5e7eb;
+            margin: 20px 0;
+        }
+        .metadata {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        .metadata-item {
+            display: flex;
+            gap: 8px;
+        }
+        .metadata-item label {
+            font-weight: 600;
+            color: #374151;
+            min-width: 110px;
+        }
+        .metadata-item span {
+            color: #1f2937;
+            word-break: break-all;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 9pt;
+            font-weight: 600;
+        }
+        .status-completed {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        .parties {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 32px;
+            margin-bottom: 32px;
+        }
+        .party h3 {
+            font-size: 11pt;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 12px;
+            padding-bottom: 6px;
+            border-bottom: 2px solid {{ platform.primary_color }};
+        }
+        .party p {
+            margin-bottom: 4px;
+            color: #4b5563;
+        }
+        .party .name {
+            font-weight: 600;
+            color: #111827;
+            font-size: 10.5pt;
+        }
+        .items-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 24px;
+        }
+        .items-table thead {
+            background: {{ platform.primary_color }};
+            color: white;
+        }
+        .items-table th {
+            padding: 12px 8px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 9.5pt;
+        }
+        .items-table th.align-right {
+            text-align: right;
+        }
+        .items-table tbody tr {
+            border-bottom: 1px solid #e5e7eb;
+            page-break-inside: avoid;
+            break-inside: avoid;
+        }
+        .items-table tbody tr:nth-child(even) {
+            background: #f9fafb;
+        }
+        .items-table td {
+            padding: 12px 8px;
+            vertical-align: top;
+        }
+        .items-table td.align-right {
+            text-align: right;
+        }
+        .item-description {
+            font-weight: 500;
+            color: #111827;
+            margin-bottom: 4px;
+        }
+        .item-notes {
+            font-size: 8.5pt;
+            color: #6b7280;
+            font-style: italic;
+        }
+        .access-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            background: #eff6ff;
+            color: {{ platform.secondary_color }};
+            border-radius: 4px;
+            font-size: 8.5pt;
+            font-weight: 500;
+        }
+        .totals-section {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 32px;
+        }
+        .totals {
+            width: 320px;
+        }
+        .totals-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 12px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .totals-row.subtotal {
+            border-top: 2px solid #d1d5db;
+        }
+        .totals-row label {
+            color: #4b5563;
+        }
+        .totals-row span {
+            font-weight: 500;
+            color: #111827;
+        }
+        .totals-row.total {
+            background: {{ platform.primary_color }};
+            color: white;
+            font-weight: 700;
+            font-size: 12pt;
+            margin-top: 4px;
+            border: none;
+        }
+        .totals-row.total label,
+        .totals-row.total span {
+            color: white;
+        }
+        .section {
+            margin-bottom: 24px;
+        }
+        .section h3 {
+            font-size: 11pt;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 12px;
+            padding-bottom: 6px;
+            border-bottom: 2px solid #e5e7eb;
+        }
+        .payment-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        .payment-item {
+            display: flex;
+            gap: 8px;
+        }
+        .payment-item label {
+            font-weight: 600;
+            color: #374151;
+            min-width: 140px;
+        }
+        .payment-item span {
+            color: #1f2937;
+            word-break: break-all;
+        }
+        .access-instructions {
+            background: #eff6ff;
+            border-left: 4px solid {{ platform.primary_color }};
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+        .access-instructions h4 {
+            font-size: 10pt;
+            font-weight: 600;
+            color: {{ platform.secondary_color }};
+            margin-bottom: 8px;
+        }
+        .access-instructions p {
+            color: {{ platform.secondary_color }};
+            font-size: 9.5pt;
+            margin-bottom: 6px;
+        }
+        .access-instructions p:last-child {
+            margin-bottom: 0;
+        }
+        .legal {
+            font-size: 9pt;
+            color: #6b7280;
+            line-height: 1.6;
+        }
+        .legal h4 {
+            font-size: 9.5pt;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 6px;
+            margin-top: 12px;
+        }
+        .legal h4:first-child {
+            margin-top: 0;
+        }
+        .legal ul {
+            margin: 8px 0 8px 20px;
+            padding: 0;
+        }
+        .legal li {
+            margin-bottom: 6px;
+        }
+        .legal a {
+            color: {{ platform.primary_color }};
+            text-decoration: none;
+        }
+        .footer {
+            margin-top: 40px;
+            padding-top: 16px;
+            border-top: 1px solid #e5e7eb;
+            text-align: center;
+        }
+        .footer p {
+            font-size: 9pt;
+            color: #6b7280;
+            margin-bottom: 4px;
+        }
+        .footer .thanks {
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 8px;
+        }
+        @bottom-center {
+            content: "Page " counter(page) " of " counter(pages);
+            font-size: 8.5pt;
+            color: #9ca3af;
+        }
+        .watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            font-size: 72pt;
+            font-weight: 900;
+            color: rgba(37, 99, 235, 0.05);
+            z-index: 0;
+            pointer-events: none;
+        }
+        .content {
+            position: relative;
+            z-index: 1;
+        }
+        .running-header {
+            display: none;
+            font-size: 9pt;
+            color: #6b7280;
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 8px;
+            margin-bottom: 16px;
+        }
+        .keep-together {
+            page-break-inside: avoid;
+            break-inside: avoid;
+        }
+    </style>
+</head>
+<body>
+    {% if payment.status == 'completed' %}
+    <div class="watermark">PAID</div>
+    {% endif %}
+    
+    <div class="invoice-container">
+        <div class="content">
+            <div class="header no-break">
+                <div class="brand-block">
+                    {% if platform.logo_url %}
+                    <img src="{{ platform.logo_url }}" alt="{{ platform.name }}" style="width: 48px; height: 48px; border-radius: 8px;">
+                    {% else %}
+                    <div class="logo">{{ platform.name|slice:":2"|upper }}</div>
+                    {% endif %}
+                    <div class="brand-text">
+                        <h1>{{ platform.name }}</h1>
+                        <p>Professional Development & Training</p>
+                    </div>
+                </div>
+                <div class="invoice-title">INVOICE</div>
+            </div>
+
+
+            <div class="divider"></div>
+
+
+            <div class="metadata no-break">
+                <div class="metadata-item">
+                    <label>Invoice No:</label>
+                    <span>{{ invoice_number }}</span>
+                </div>
+                <div class="metadata-item">
+                    <label>Transaction ID:</label>
+                    <span>{{ payment.transaction_id }}</span>
+                </div>
+                <div class="metadata-item">
+                    <label>Issue Date:</label>
+                    <span>{{ payment.created_at|date:"F d, Y" }}</span>
+                </div>
+                <div class="metadata-item">
+                    <label>Payment Date:</label>
+                    <span>{{ payment.completed_at|date:"F d, Y, h:i A" }}</span>
+                </div>
+                <div class="metadata-item">
+                    <label>Status:</label>
+                    <span class="status-badge status-{{ payment.status }}">{{ payment.status|title }}</span>
+                </div>
+            </div>
+
+
+            <div class="divider"></div>
+
+
+            <div class="parties no-break">
+                <div class="party">
+                    <h3>Bill To</h3>
+                    <p class="name">{{ payment.user.get_full_name }}</p>
+                    <p>{{ payment.user.email }}</p>
+                    {% if payment.user.phone %}
+                    <p>{{ payment.user.phone }}</p>
+                    {% endif %}
+                    <p>Customer ID: CUST-{{ payment.user.id|stringformat:"06d" }}</p>
+                </div>
+                <div class="party">
+                    <h3>Issued By</h3>
+                    <p class="name">{{ platform.name }}</p>
+                    {% if platform.address_lines %}
+                    {% for line in platform.address_lines %}
+                    <p>{{ line }}</p>
+                    {% endfor %}
+                    {% endif %}
+                    <p>{{ platform.website }}</p>
+                    <p>{{ platform.support_email }}</p>
+                    {% if platform.contact_phone %}
+                    <p>{{ platform.contact_phone }}</p>
+                    {% endif %}
+                </div>
+            </div>
+
+
+            <table class="items-table">
+                <thead>
+                    <tr>
+                        <th style="width: 40%;">Description</th>
+                        <th style="width: 20%;">Access Type</th>
+                        <th class="align-right" style="width: 10%;">Qty</th>
+                        <th class="align-right" style="width: 15%;">Unit Price</th>
+                        <th class="align-right" style="width: 15%;">Line Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for payment_webinar in payment.payment_webinars.all %}
+                    <tr>
+                        <td>
+                            <div class="item-description">{{ payment_webinar.webinar.title }}</div>
+                            <div class="item-notes">
+                                {% if 'live' in payment_webinar.access_type.lower or 'combo' in payment_webinar.access_type.lower %}
+                                Live session: {{ payment_webinar.webinar.scheduled_at|date:"F d, Y \a\t h:i A" }} EST
+                                {% elif 'recorded' in payment_webinar.access_type.lower %}
+                                Access for 6 months from purchase date
+                                {% endif %}
+                            </div>
+                        </td>
+                        <td>
+                            <span class="access-badge">
+                                {% if payment_webinar.access_type == 'liveOne' %}Live - Single
+                                {% elif payment_webinar.access_type == 'liveGroup' %}Live - Group
+                                {% elif payment_webinar.access_type == 'recordedOne' %}Recorded - Single
+                                {% elif payment_webinar.access_type == 'recordedGroup' %}Recorded - Group
+                                {% elif payment_webinar.access_type == 'comboOne' %}Combo - Single
+                                {% elif payment_webinar.access_type == 'comboGroup' %}Combo - Group
+                                {% else %}{{ payment_webinar.access_type|title }}
+                                {% endif %}
+                            </span>
+                        </td>
+                        <td class="align-right">1</td>
+                        <td class="align-right">{{ payment.currency|upper }} {{ payment_webinar.amount|floatformat:2 }}</td>
+                        <td class="align-right">{{ payment.currency|upper }} {{ payment_webinar.amount|floatformat:2 }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+
+            <div class="totals-section keep-together">
+                <div class="totals">
+                    <div class="totals-row subtotal">
+                        <label>Subtotal:</label>
+                        <span>{{ payment.currency|upper }} {{ subtotal|floatformat:2 }}</span>
+                    </div>
+                    {% if processing_fee > 0 %}
+                    <div class="totals-row">
+                        <label>Processing Fee:</label>
+                        <span>{{ payment.currency|upper }} {{ processing_fee|floatformat:2 }}</span>
+                    </div>
+                    {% endif %}
+                    {% if discount > 0 %}
+                    <div class="totals-row">
+                        <label>Discount:</label>
+                        <span>-{{ payment.currency|upper }} {{ discount|floatformat:2 }}</span>
+                    </div>
+                    {% endif %}
+                    <div class="totals-row total">
+                        <label>Total Due ({{ payment.currency|upper }}):</label>
+                        <span>{{ payment.currency|upper }} {{ payment.amount|floatformat:2 }}</span>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="section keep-together">
+                <h3>Payment Details</h3>
+                <div class="payment-grid">
+                    <div class="payment-item">
+                        <label>Payment Method:</label>
+                        <span>{{ payment.payment_method|title }}</span>
+                    </div>
+                    {% if payment.gateway_payment_id %}
+                    <div class="payment-item">
+                        <label>Gateway Transaction ID:</label>
+                        <span>{{ payment.gateway_payment_id }}</span>
+                    </div>
+                    {% endif %}
+                    <div class="payment-item">
+                        <label>Currency:</label>
+                        <span>{{ payment.currency|upper }}</span>
+                    </div>
+                    <div class="payment-item">
+                        <label>Completed At:</label>
+                        <span>{{ payment.completed_at|date:"M d, Y, h:i A" }} EST</span>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="access-instructions keep-together">
+                <h4>Access Instructions</h4>
+                {% if has_live_access %}
+                <p><strong>Live Webinar:</strong> Joining instructions will be emailed to you 24 hours before the scheduled session.</p>
+                {% endif %}
+                {% if has_recorded_access %}
+                <p><strong>Recorded Content:</strong> Recordings are available in your dashboard for 6 months from the date of purchase.</p>
+                {% endif %}
+            </div>
+
+
+            <div class="section legal">
+                <h3>Terms & Policies</h3>
+                <div class="keep-together">
+                    <h4>Refund Policy</h4>
+                    <p>Refunds may be approved only under the following circumstances:</p>
+                    <ul>
+                        <li><strong>Duplicate Payment:</strong> If you are charged twice for the same course or service, the duplicate transaction will be refunded after verification.</li>
+                        <li><strong>Technical Issues:</strong> If you are unable to access the course or live session due to a verified technical issue on our platform (not due to user error, poor internet, or device incompatibility).</li>
+                        <li><strong>Event or Session Cancelled by Organizer:</strong> If a scheduled live event, webinar, or session is cancelled by {{ platform.name }}, participants will be eligible for a full refund or credit transfer to another program.</li>
+                        <li><strong>Participant Cancellation with Prior Notice:</strong> If a participant cannot attend a live session and provides at least 48 hours' prior notice before the scheduled start time, a refund or credit transfer may be approved.</li>
+                    </ul>
+                    <p>No refunds will be issued for change of mind after content has been accessed. Subscription cancellation is available anytime. <a href="{{ platform.website }}/refund-cancellation-policy">View Full Refund Policy</a></p>
+                </div>
+                <div class="keep-together">
+                    <h4>License & Use Policy</h4>
+                    <p>Recorded content is licensed for personal use only for a period of 6 months from purchase date. Content must not be redistributed, shared, or used for commercial purposes without written permission from {{ platform.name }}.</p>
+                </div>
+                <div class="keep-together">
+                    <h4>Support</h4>
+                    <p>For questions or assistance, contact our support team at <a href="mailto:{{ platform.support_email }}">{{ platform.support_email }}</a>.</p>
+                </div>
+            </div>
+
+
+            <div class="footer">
+                <p class="thanks">Thank you for your business!</p>
+                <p>{{ platform.name }} | {{ platform.website }} | {{ platform.support_email }}</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

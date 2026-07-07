@@ -1,0 +1,246 @@
+{% extends 'emails/base_email.html' %}
+
+{% block content %}
+
+<!-- Success Icon -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin: 0 0 25px 0;">
+    <tr>
+        <td align="center">
+            <div style="width: 80px; height: 80px; background: linear-gradient(135deg, {{ colors.primary }} 0%, {{ colors.accent }} 100%); border-radius: 50%; display: inline-block; text-align: center; line-height: 80px; box-shadow: 0 4px 12px rgba(72, 187, 120, 0.3);">
+                <span style="font-size: 40px; display: inline-block; vertical-align: middle; line-height: 80px;">🎉</span>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<!-- Congratulations Message -->
+<h2 style="color: #2d3748; font-size: 26px; font-weight: 700; margin: 0 0 20px 0; text-align: center;">
+    Congratulations, {{ user.first_name|default:user.email }}!
+</h2>
+
+<!-- Success Box -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background: linear-gradient(135deg, #f0fff4 0%, #e6fffa 100%); border-left: 4px solid #48bb78; border-radius: 0 8px 8px 0; margin: 0 0 25px 0;">
+    <tr>
+        <td style="padding: 25px;">
+            <p style="color: #2d3748; font-size: 16px; font-weight: 600; margin: 0 0 10px 0;">
+                🎊 Great News!
+            </p>
+            <p style="color: #276749; font-size: 15px; line-height: 1.7; margin: 0;">
+                Your instructor application has been <strong>approved</strong>! You can now start creating and hosting webinars on <strong>{% if platform %}{{ platform.name }}{% else %}WebinarPro{% endif %}</strong>.
+            </p>
+        </td>
+    </tr>
+</table>
+
+<!-- Welcome Message -->
+<p style="color: #4a5568; font-size: 16px; line-height: 1.7; margin: 0 0 15px 0;">
+    Welcome to our community of expert instructors! You now have access to:
+</p>
+
+<!-- Features List -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin: 0 0 25px 0;">
+    <tr>
+        <td style="padding: 5px 0;">
+            <table cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                    <td style="padding-right: 10px; vertical-align: top;">
+                        <span style="font-size: 18px;">🎥</span>
+                    </td>
+                    <td>
+                        <p style="color: #4a5568; font-size: 14px; line-height: 1.6; margin: 0;">
+                            <strong>Webinar Creation Tools</strong> - Build engaging presentations
+                        </p>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding: 5px 0;">
+            <table cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                    <td style="padding-right: 10px; vertical-align: top;">
+                        <span style="font-size: 18px;">📊</span>
+                    </td>
+                    <td>
+                        <p style="color: #4a5568; font-size: 14px; line-height: 1.6; margin: 0;">
+                            <strong>Analytics Dashboard</strong> - Track your performance
+                        </p>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding: 5px 0;">
+            <table cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                    <td style="padding-right: 10px; vertical-align: top;">
+                        <span style="font-size: 18px;">💰</span>
+                    </td>
+                    <td>
+                        <p style="color: #4a5568; font-size: 14px; line-height: 1.6; margin: 0;">
+                            <strong>Revenue Management</strong> - Monitor your earnings
+                        </p>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding: 5px 0;">
+            <table cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                    <td style="padding-right: 10px; vertical-align: top;">
+                        <span style="font-size: 18px;">👥</span>
+                    </td>
+                    <td>
+                        <p style="color: #4a5568; font-size: 14px; line-height: 1.6; margin: 0;">
+                            <strong>Student Management</strong> - Engage with your audience
+                        </p>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding: 5px 0;">
+            <table cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                    <td style="padding-right: 10px; vertical-align: top;">
+                        <span style="font-size: 18px;">🔗</span>
+                    </td>
+                    <td>
+                        <p style="color: #4a5568; font-size: 14px; line-height: 1.6; margin: 0;">
+                            <strong>Zoom Integration</strong> - Seamless webinar hosting
+                        </p>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+<!-- CTA Button -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin: 30px 0;">
+    <tr>
+        <td align="center">
+            <table cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                    <td style="background: linear-gradient(135deg, {{ colors.primary }} 0%, {{ colors.secondary }} 100%); border-radius: 8px; box-shadow: 0 4px 12px rgba(66, 153, 225, 0.3);">
+                        <a href="{{ dashboard_url }}" style="display: block; color: #ffffff; text-decoration: none; padding: 16px 40px; font-size: 16px; font-weight: 600;">
+                            🚀 Access Instructor Dashboard
+                        </a>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+<!-- Next Steps Box -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #f0f9ff; border-left: 4px solid {{ colors.primary }}; border-radius: 0 8px 8px 0; margin: 25px 0 0 0;">
+    <tr>
+        <td style="padding: 25px;">
+            <p style="color: #2d3748; font-size: 16px; font-weight: 600; margin: 0 0 15px 0;">
+                📋 Next Steps
+            </p>
+            
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                    <td style="padding: 4px 0;">
+                        <table cellpadding="0" cellspacing="0" border="0">
+                            <tr>
+                                <td style="padding-right: 8px; vertical-align: top; color: {{ colors.primary }}; font-weight: bold; font-size: 14px;">
+                                    1.
+                                </td>
+                                <td>
+                                    <p style="color: #4a5568; font-size: 14px; line-height: 1.6; margin: 0;">
+                                        Complete your instructor profile
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 4px 0;">
+                        <table cellpadding="0" cellspacing="0" border="0">
+                            <tr>
+                                <td style="padding-right: 8px; vertical-align: top; color: {{ colors.primary }}; font-weight: bold; font-size: 14px;">
+                                    2.
+                                </td>
+                                <td>
+                                    <p style="color: #4a5568; font-size: 14px; line-height: 1.6; margin: 0;">
+                                        Connect your Zoom account for hosting
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 4px 0;">
+                        <table cellpadding="0" cellspacing="0" border="0">
+                            <tr>
+                                <td style="padding-right: 8px; vertical-align: top; color: {{ colors.primary }}; font-weight: bold; font-size: 14px;">
+                                    3.
+                                </td>
+                                <td>
+                                    <p style="color: #4a5568; font-size: 14px; line-height: 1.6; margin: 0;">
+                                        Create your first webinar
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 4px 0;">
+                        <table cellpadding="0" cellspacing="0" border="0">
+                            <tr>
+                                <td style="padding-right: 8px; vertical-align: top; color: {{ colors.primary }}; font-weight: bold; font-size: 14px;">
+                                    4.
+                                </td>
+                                <td>
+                                    <p style="color: #4a5568; font-size: 14px; line-height: 1.6; margin: 0;">
+                                        Set up your payment preferences
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+<!-- Support Message -->
+<p style="color: #4a5568; font-size: 15px; line-height: 1.7; margin: 25px 0 0 0;">
+    Our team is here to support you every step of the way. If you have any questions or need assistance getting started, don't hesitate to reach out!
+</p>
+
+<!-- Divider -->
+<div style="height: 1px; background-color: #e2e8f0; margin: 30px 0;"></div>
+
+<!-- Help Section -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0">
+    <tr>
+        <td style="background-color: #f9fafb; border-radius: 8px; padding: 20px;">
+            <p style="color: #2d3748; font-size: 15px; font-weight: 600; margin: 0 0 10px 0;">
+                Need Help?
+            </p>
+            <p style="color: #6b7280; font-size: 14px; line-height: 1.6; margin: 0;">
+                Check out our 
+                <a href="{{ help_url|default:'#' }}" style="color: {{ colors.primary }}; text-decoration: none; font-weight: 500;">Instructor Guide</a> 
+                or contact our support team at 
+                <a href="mailto:{{ support_email|default:'support@webinarpro.com' }}" style="color: {{ colors.primary }}; text-decoration: none; font-weight: 500;">
+                    {{ support_email|default:'support@webinarpro.com' }}
+                </a>
+            </p>
+        </td>
+    </tr>
+</table>
+
+{% endblock %}

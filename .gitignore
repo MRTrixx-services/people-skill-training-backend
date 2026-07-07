@@ -1,0 +1,117 @@
+# ============================================
+# SERVER-SPECIFIC FILES (Different per server)
+# ============================================
+.env
+Dockerfile
+docker-compose.yml
+docker-compose.*.yml
+
+# ============================================
+# LOGS (Too large for Git)
+# ============================================
+logs/
+*.log
+*.log.*
+celery.log
+celery.log.*
+django.log
+email.log
+webinars.log
+zoom.log
+
+# ============================================
+# PYTHON CACHE (Auto-generated)
+# ============================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.coverage
+htmlcov/
+*.cover
+.hypothesis/
+
+# ============================================
+# MEDIA FILES (Now in Spaces S3)
+# ============================================
+media/
+staticfiles/
+static_root/
+
+# ============================================
+# DATABASE (Local dev only)
+# ============================================
+*.sqlite3
+*.db
+
+# ============================================
+# CELERY
+# ============================================
+celerybeat-schedule
+celerybeat.pid
+
+# ============================================
+# ENVIRONMENT & SECRETS
+# ============================================
+.env
+.env.*
+.venv/
+env/
+venv/
+ENV/
+
+# ============================================
+# IDE & EDITOR
+# ============================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# ============================================
+# TEMP FILES
+# ============================================
+*.tmp
+*.bak
+*.orig
+*.rej
+*.diff
+*.patch
+.~*
+
+# ============================================
+# NGINX CONFIGS (Server-specific)
+# ============================================
+undo-nginx-*
+
+# ============================================
+# GIT KEEP (Keep empty dirs)
+# ============================================
+!.gitkeep
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+# ============================================
+# MEDIA FILES (Now in Spaces S3)
+# ============================================
+media/
+staticfiles/
+static_root/
+# ============================================
+# MEDIA FILES
+# ============================================
+# media/        <-- REMOVE or COMMENT OUT
+staticfiles/
+static_root/

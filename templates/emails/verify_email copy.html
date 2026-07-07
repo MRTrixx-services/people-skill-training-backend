@@ -1,0 +1,113 @@
+{% extends 'emails/base_email.html' %}
+
+{% block content %}
+<!-- Icon Section -->
+<div style="text-align: center; margin-bottom: 30px;">
+    <div style="display: inline-block; width: 80px; height: 80px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 8px 16px rgba(102, 126, 234, 0.25);">
+        <svg style="width: 40px; height: 40px;" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+        </svg>
+    </div>
+</div>
+
+<!-- Greeting -->
+<div class="greeting">
+    Hello {% if user.first_name %}{{ user.first_name }}{% else %}there{% endif %}! 👋
+</div>
+
+<!-- Main Content -->
+<div class="main-content">
+    <p>Welcome to <strong>{{ platform.name|default:"PeopleSkillTraining" }}</strong>! We're excited to have you join our community of learners and professionals.</p>
+    
+    <p>To complete your registration and unlock access to all our amazing webinars and features, please verify your email address by clicking the button below:</p>
+</div>
+
+<!-- CTA Button -->
+<div style="text-align: center; margin: 40px 0;">
+    <a href="{{ verification_url }}" class="cta-button" style="display: inline-block; background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%); color: white !important; text-decoration: none; padding: 18px 45px; border-radius: 10px; font-weight: 600; font-size: 16px; box-shadow: 0 4px 12px rgba(66, 153, 225, 0.3);">
+        ✓ Verify My Email Address
+    </a>
+</div>
+
+<!-- Account Information Box -->
+<div class="info-box">
+    <strong>📋 Account Information</strong>
+    <div style="margin-top: 12px; color: #4a5568; line-height: 1.8;">
+        <strong>Email:</strong> {{ user.email }}<br>
+        {% if user.first_name %}
+        <strong>Name:</strong> {{ user.first_name }}{% if user.last_name %} {{ user.last_name }}{% endif %}<br>
+        {% endif %}
+        <strong>Role:</strong> {{ user.role|title }}<br>
+        <strong>Platform:</strong> {{ platform.name|default:"PeopleSkillTraining" }}<br>
+        <strong>Registration Date:</strong> {{ user.created_at|date:"F d, Y at g:i A" }}
+    </div>
+</div>
+
+<!-- What's Next Section -->
+<div class="success-box" style="background: linear-gradient(135deg, #f0fff4 0%, #e6fffa 100%); border-left: 4px solid #48bb78; padding: 25px; margin: 25px 0; border-radius: 0 10px 10px 0;">
+    <strong style="color: #2d3748; display: block; margin-bottom: 12px;">🎉 What's Next?</strong>
+    <div style="color: #4a5568; line-height: 1.8;">
+        After verifying your email, you'll be able to:
+        <ul style="margin: 10px 0 0 20px; padding: 0;">
+            <li>Access thousands of professional webinars</li>
+            <li>Connect with industry experts and instructors</li>
+            <li>Track your learning progress and achievements</li>
+            <li>Receive personalized course recommendations</li>
+        </ul>
+    </div>
+</div>
+
+<!-- Security Notice -->
+<div class="warning-box">
+    <strong>⏰ Important Security Notice</strong>
+    <div style="margin-top: 8px; color: #744210;">
+        <ul style="margin: 10px 0 0 0; padding-left: 20px;">
+            <li>This verification link will <strong>expire in 24 hours</strong></li>
+            <li>If you didn't create this account, please ignore this email</li>
+            <li>Never share this verification link with anyone</li>
+            <li>For security reasons, this link can only be used once</li>
+        </ul>
+    </div>
+</div>
+
+<!-- Alternative Link Section -->
+<div style="margin-top: 30px; padding-top: 25px; border-top: 1px solid #e2e8f0;">
+    <p style="color: #4a5568; font-size: 14px; margin-bottom: 10px;">
+        <strong>Button not working?</strong> No worries! Copy and paste this link into your browser:
+    </p>
+    <div style="background-color: #f7fafc; padding: 15px; border-radius: 8px; word-break: break-all; font-size: 13px; color: #4299e1; border: 1px solid #e2e8f0; font-family: 'Courier New', monospace;">
+        {{ verification_url }}
+    </div>
+</div>
+
+<!-- Need Help Section -->
+<div style="margin-top: 40px; padding: 25px; background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%); border-radius: 10px; text-align: center;">
+    <p style="color: #2d3748; font-size: 15px; margin-bottom: 15px;">
+        <strong>Need Help?</strong>
+    </p>
+    <p style="color: #718096; font-size: 14px; line-height: 1.6;">
+        Our support team is here to assist you!<br>
+        📧 <a href="mailto:{{ platform.support_email|default:'support@peopleskilltraining.com' }}" style="color: #4299e1; text-decoration: none;">{{ platform.support_email|default:"support@peopleskilltraining.com" }}</a><br>
+        📞 {{ platform.contact_phone|default:"+1 (555) 123-4567" }}<br>
+        <span style="font-size: 13px; color: #a0aec0;">Available Monday-Friday, 9AM-6PM EST</span>
+    </p>
+</div>
+
+<!-- Tips Section -->
+<div style="margin-top: 30px; padding: 20px; background-color: #fff5f5; border-left: 4px solid #fc8181; border-radius: 0 8px 8px 0;">
+    <strong style="color: #c53030; display: block; margin-bottom: 10px;">💡 Quick Tips</strong>
+    <ul style="margin: 0; padding-left: 20px; color: #4a5568; font-size: 14px; line-height: 1.8;">
+        <li>Check your spam folder if you can't find this email</li>
+        <li>Add our email to your contacts to avoid missing updates</li>
+        <li>Complete your profile after verification for personalized recommendations</li>
+    </ul>
+</div>
+
+<!-- Footer Note -->
+<div style="margin-top: 30px; padding-top: 20px; border-top: 2px solid #e2e8f0; text-align: center;">
+    <p style="color: #718096; font-size: 13px; line-height: 1.6;">
+        This is an automated message. Please do not reply to this email.<br>
+        If you have questions, please contact us using the information above.
+    </p>
+</div>
+{% endblock %}

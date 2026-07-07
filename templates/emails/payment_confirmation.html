@@ -1,0 +1,205 @@
+{% extends 'emails/base_email.html' %}
+
+{% block content %}
+
+<!-- Success Icon - ✅ Use platform colors -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin: 0 0 25px 0;">
+    <tr>
+        <td align="center">
+            <div style="width: 80px; height: 80px; background: linear-gradient(135deg, {{ colors.accent }} 0%, {{ colors.primary }} 100%); border-radius: 50%; display: inline-block; text-align: center; line-height: 80px; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);">
+                <span style="font-size: 40px; color: #ffffff;">✓</span>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<!-- Header -->
+<h2 style="color: #2d3748; font-size: 26px; font-weight: 700; margin: 0 0 10px 0; text-align: center;">
+    Payment Confirmed!
+</h2>
+
+<p style="color: {{ colors.accent }}; font-size: 16px; font-weight: 600; text-align: center; margin: 0 0 30px 0;">
+    Your enrollment is complete
+</p>
+
+<!-- Greeting -->
+<p style="color: #4a5568; font-size: 16px; line-height: 1.7; margin: 0 0 20px 0;">
+    Hi {{ user_name }},
+</p>
+
+<p style="color: #4a5568; font-size: 15px; line-height: 1.7; margin: 0 0 25px 0;">
+    Thank you for your purchase! Your payment has been successfully processed, and you're now enrolled in your webinar{% if webinars|length > 1 %}s{% endif %}.
+</p>
+
+<!-- Transaction Details (unchanged) -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #f9fafb; border: 2px solid #e5e7eb; border-radius: 8px; margin: 0 0 25px 0;">
+    <tr>
+        <td style="padding: 20px;">
+            <p style="color: #1f2937; font-size: 18px; font-weight: 700; margin: 0 0 15px 0;">
+                Payment Details
+            </p>
+            
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                    <td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb;">
+                        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                            <tr>
+                                <td style="color: #6b7280; font-size: 14px;">Transaction ID:</td>
+                                <td align="right" style="color: #1f2937; font-size: 14px; font-weight: 600;">
+                                    {{ transaction_id }}
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb;">
+                        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                            <tr>
+                                <td style="color: #6b7280; font-size: 14px;">Payment Date:</td>
+                                <td align="right" style="color: #1f2937; font-size: 14px; font-weight: 600;">
+                                    {{ payment_date }}
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td style="padding: 10px 0; border-bottom: 1px solid #e5e7eb;">
+                        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                            <tr>
+                                <td style="color: #6b7280; font-size: 14px;">Payment Method:</td>
+                                <td align="right" style="color: #1f2937; font-size: 14px; font-weight: 600;">
+                                    {{ payment_method }}
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td style="padding: 15px 0 0 0;">
+                        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                            <tr>
+                                <td style="color: #1f2937; font-size: 16px; font-weight: 700;">Total Amount:</td>
+                                <td align="right" style="color: #1f2937; font-size: 18px; font-weight: 700;">
+                                    {% if currency == 'USD' %}${% elif currency == 'EUR' %}€{% elif currency == 'GBP' %}£{% elif currency == 'INR' %}₹{% else %}{{ currency }} {% endif %}{{ total_amount }}
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+<!-- Webinar List -->
+<p style="color: #1f2937; font-size: 18px; font-weight: 700; margin: 0 0 15px 0;">
+    Your Enrolled Webinar{% if webinars|length > 1 %}s{% endif %}:
+</p>
+
+{% for webinar in webinars %}
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #f9fafb; border-left: 4px solid {{ colors.primary }}; border-radius: 0 8px 8px 0; margin: 0 0 15px 0;">
+    <tr>
+        <td style="padding: 20px;">
+            <p style="color: #1f2937; font-size: 18px; font-weight: 700; margin: 0 0 10px 0;">
+                {{ webinar.title }}
+            </p>
+            
+            <p style="color: #6b7280; font-size: 14px; margin: 5px 0;">
+                <strong style="color: #374151;">Instructor:</strong> {{ webinar.instructor }}
+            </p>
+            
+            <p style="color: #6b7280; font-size: 14px; margin: 5px 0;">
+                <strong style="color: #374151;">Scheduled:</strong> {{ webinar.scheduled_date }}
+            </p>
+            
+            <p style="color: #6b7280; font-size: 14px; margin: 5px 0 15px 0;">
+                <strong style="color: #374151;">Duration:</strong> {{ webinar.duration }}
+            </p>
+            
+            <table cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                    <td style="background: linear-gradient(135deg, {{ colors.primary }} 0%, {{ colors.secondary }} 100%); border-radius: 6px;">
+                        <a href="{{ webinar.webinar_url }}" style="display: block; color: #ffffff; text-decoration: none; padding: 10px 20px; font-size: 14px; font-weight: 600;">
+                            View Webinar Details →
+                        </a>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+{% endfor %}
+
+<!-- Divider -->
+<div style="height: 1px; background-color: #e5e7eb; margin: 30px 0;"></div>
+
+<!-- Action Buttons -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin: 30px 0;">
+    <tr>
+        <td align="center">
+            <table cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                    <td style="padding: 0 5px;">
+                        <table cellpadding="0" cellspacing="0" border="0">
+                            <tr>
+                                <td style="background: linear-gradient(135deg, {{ colors.primary }} 0%, {{ colors.secondary }} 100%); border-radius: 8px;">
+                                    <a href="{{ dashboard_url }}" style="display: block; color: #ffffff; text-decoration: none; padding: 14px 32px; font-size: 16px; font-weight: 600;">
+                                        View My Enrollments
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td style="padding: 0 5px;">
+                        <table cellpadding="0" cellspacing="0" border="0">
+                            <tr>
+                                <td style="background-color: #ffffff; border: 2px solid {{ colors.primary }}; border-radius: 8px;">
+                                    <a href="{{ invoice_url }}" style="display: block; color: {{ colors.primary }}; text-decoration: none; padding: 12px 30px; font-size: 16px; font-weight: 600;">
+                                        Download Invoice
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+<!-- Info Box -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #eff6ff; border-left: 4px solid #3b82f6; border-radius: 0 8px 8px 0; margin: 25px 0 0 0;">
+    <tr>
+        <td style="padding: 20px;">
+            <p style="color: #1e40af; font-size: 15px; font-weight: 600; margin: 0 0 10px 0;">
+                📧 What's Next?
+            </p>
+            <p style="color: #1e40af; font-size: 14px; margin: 5px 0; line-height: 1.6;">
+                • You'll receive webinar access details 24 hours before the start time
+            </p>
+            <p style="color: #1e40af; font-size: 14px; margin: 5px 0; line-height: 1.6;">
+                • Check your dashboard for all enrolled webinars
+            </p>
+            <p style="color: #1e40af; font-size: 14px; margin: 5px 0; line-height: 1.6;">
+                • We'll send you reminder emails before each session
+            </p>
+        </td>
+    </tr>
+</table>
+
+<!-- Closing Message -->
+<p style="color: #4a5568; font-size: 15px; line-height: 1.7; margin: 30px 0 0 0;">
+    If you have any questions about your purchase or need assistance, please don't hesitate to contact our support team.
+</p>
+
+<p style="color: #4a5568; font-size: 15px; margin: 25px 0 0 0;">
+    Best regards,<br>
+    <strong style="color: #2d3748;">{{ company_name }} Team</strong>
+</p>
+
+{% endblock %}
