@@ -25,11 +25,20 @@ RUN apt-get update && apt-get install -y \
     libpq-dev \
     pkg-config \
     curl \
+    netcat-openbsd \
     libffi-dev \
     libssl-dev \
     libjpeg-dev \
     zlib1g-dev \
-    netcat-openbsd \
+    libcairo2 \
+    libcairo2-dev \
+    libpango-1.0-0 \
+    libpangocairo-1.0-0 \
+    libgdk-pixbuf-2.0-0 \
+    libgdk-pixbuf2.0-dev \
+    libffi8 \
+    shared-mime-info \
+    fonts-dejavu-core \
     && rm -rf /var/lib/apt/lists/*
 
 # ============================================
