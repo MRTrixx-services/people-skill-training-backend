@@ -2,9 +2,7 @@
 # SERVER-SPECIFIC FILES (Different per server)
 # ============================================
 .env
-Dockerfile
-docker-compose.yml
-docker-compose.*.yml
+
 
 # ============================================
 # LOGS (Too large for Git)
