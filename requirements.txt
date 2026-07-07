@@ -13,7 +13,9 @@ PyJWT==2.10.1
 # Database
 psycopg2-binary==2.9.9
 dj-database-url==2.1.0
-
+# APIs & Integrations
+requests==2.32.5
+sib-api-v3-sdk==7.6.0
 # Celery & Task Queue ← UPDATED
 celery==5.3.4
 redis==5.0.1
