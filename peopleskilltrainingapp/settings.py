@@ -20,9 +20,11 @@ SECRET_KEY = config('SECRET_KEY', default='django-insecure-change-me-in-producti
 DEBUG = config('DEBUG', default=True, cast=bool)
 
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1,103.194.228.141,peopleskilltraining.com,api.compliancetrained.com,www.peopleskilltraining.com', cast=lambda v: [s.strip() for s in v.split(',')])
-
-
+ALLOWED_HOSTS = config(
+    "ALLOWED_HOSTS",
+    default="localhost,127.0.0.1,peopleskilltraining.com,www.peopleskilltraining.com,api.peopleskilltraining.com",
+    cast=lambda v: [host.strip() for host in v.split(",")]
+)
 # Application definition
 DJANGO_APPS = [
     'django.contrib.admin',
