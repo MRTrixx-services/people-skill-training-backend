@@ -35,7 +35,6 @@ RUN apt-get update && apt-get install -y \
     libpango-1.0-0 \
     libpangocairo-1.0-0 \
     libgdk-pixbuf-2.0-0 \
-    libgdk-pixbuf2.0-dev \
     libffi8 \
     shared-mime-info \
     fonts-dejavu-core \
@@ -48,7 +47,6 @@ RUN apt-get update && apt-get install -y \
 COPY requirements.txt .
 
 RUN pip install --upgrade pip
-
 RUN pip install --no-cache-dir -r requirements.txt
 
 # ============================================
@@ -61,15 +59,13 @@ COPY . .
 # Create Required Directories
 # ============================================
 
-RUN mkdir -p logs
-RUN mkdir -p staticfiles
-RUN mkdir -p media
+RUN mkdir -p logs staticfiles media
 
 # ============================================
 # Make Entrypoint Executable
 # ============================================
 
-RUN chmod +x docker-entrypoint.sh
+RUN chmod +x /app/docker-entrypoint.sh
 
 # ============================================
 # Expose Port
